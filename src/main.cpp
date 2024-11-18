@@ -8,18 +8,25 @@ std::vector<uint8_t> prepareData(uint8_t data_id, uint8_t battery_level, std::ar
 
 NimBLEAdvertising *pAdvertising = NULL;
 
+uint8_t data_id = 0;
+
 void setup() {
   NimBLEDevice::init("uMyo v2");
 
   pAdvertising = NimBLEDevice::getAdvertising();
   pAdvertising->setName("uMyo v2");
-
-  pAdvertising->setManufacturerData(prepareData(1, 255, std::array<int16_t, 4>{32767, 3223, 323, 2121}, 255, std::array<int16_t, 4>{2323, 2232, 2323, 2323}));
-  pAdvertising->start();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  pAdvertising->stop();
+
+  pAdvertising->setManufacturerData(prepareData(data_id, 63, std::array<int16_t, 4>{32767, 3223, 323, 2121}, 255, std::array<int16_t, 4>{2323, 2232, 2323, 2323}));
+
+  pAdvertising->start();
+
+  data_id++;
+
+  delay(10);
 } 
 
 std::vector<uint8_t> prepareData(uint8_t data_id, uint8_t battery_level, std::array<int16_t, 4> spectrum, int muscle_level, std::array<int16_t, 4> quaternion) {
